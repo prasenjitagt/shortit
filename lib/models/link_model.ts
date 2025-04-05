@@ -1,8 +1,8 @@
 import mongoose, { Schema, Document, Model } from "mongoose";
-import { ILink } from "@/lib/types/link_type"; // ad
+import { DBLinkModelType } from "@/lib/types/link_type"; // ad
 
 // Extend ILink with Document for full Mongoose typing
-type LinkDocument = ILink & Document;
+type LinkDocument = DBLinkModelType & Document;
 
 //Link Schema :
 
@@ -15,11 +15,13 @@ const LinkSchema: Schema<LinkDocument> = new mongoose.Schema({
         type: String,
         required: true,
     },
-    shortenedLink: {
+    alias: {
         type: String,
         required: true,
         unique: true,
     },
+}, {
+    timestamps: true, // <- adds createdAt and updatedAt automatically
 });
 
 

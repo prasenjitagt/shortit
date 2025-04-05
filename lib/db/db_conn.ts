@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 
-const connectDB = async () => {
+export const connectDB = async () => {
     const MONGO_URI: string = process.env.MONGO_URI as string;
 
 
@@ -16,4 +16,3 @@ const connectDB = async () => {
 }
 
 
-export default connectDB;

@@ -1,6 +1,6 @@
 // types/Link.ts (or wherever you organize types)
-export interface ILink {
+export interface DBLinkModelType {
     userEmail: string;
     originalLink: string;
-    shortenedLink: string;
+    alias: string;
 }
