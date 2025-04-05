@@ -1,14 +1,27 @@
-import { redirect } from "next/dist/server/api-utils";
+import connectDB from "@/lib/db/db_conn";
+import LinkModel from "@/lib/models/link_model";
+import { GetLinkResponse } from "@/lib/types/next_response";
 import { NextRequest, NextResponse } from "next/server";
 
 interface Params {
-    params: { link: string };
+    params: { shortenedLink: string };
 }
+export async function GET(
+    req: NextRequest,
+    { params }: Params
+): Promise<NextResponse<GetLinkResponse>> {
+    const { shortenedLink } = params;
+    await connectDB();
 
-export async function GET(req: NextRequest, { params }: Params) {
-    const { link } = await params;
+    if (!shortenedLink) {
+        return NextResponse.json({ error: "Link parameter is required" }, { status: 400 });
+    }
 
+    const existingShortenedLink = await LinkModel.findOne({ shortenedLink });
 
-    // Return a proper JSON response
-    return NextResponse.json({ redirectLink: `https://www.google.com/search?q=${link}` }, { status: 200 });
+    if (!existingShortenedLink) {
+        return NextResponse.json({ error: "Link not found" }, { status: 404 });
+    }
+
+    return NextResponse.json({ originalLink: existingShortenedLink.originalLink }, { status: 200 });
 }
