@@ -1,6 +1,6 @@
-import connectDB from "@/lib/db/db_conn";
+import { connectDB } from "@/lib/db/db_conn";
 import LinkModel from "@/lib/models/link_model";
-import { GetLinkResponse } from "@/lib/types/next_response";
+// import { ShortenedLinkResponse } from "@/lib/types/next_response";
 import { NextRequest, NextResponse } from "next/server";
 
 interface Params {
@@ -9,7 +9,7 @@ interface Params {
 export async function GET(
     req: NextRequest,
     { params }: Params
-): Promise<NextResponse<GetLinkResponse>> {
+) {
     const { shortenedLink } = params;
     await connectDB();
 

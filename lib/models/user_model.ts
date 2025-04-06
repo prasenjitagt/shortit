@@ -1,25 +1,31 @@
-import mongoose from "mongoose";
+import mongoose, { Schema, Document, Model, Types } from "mongoose";
 
-//Setting Schemna : 
-const UserSchema = new mongoose.Schema({
-    username:
+export interface DBUserModelType extends Document {
+    name: string;
+    email: string;
+    password?: string;
+    _id: Types.ObjectId; // <-- Add this explicitly
+}
+
+const UserSchema: Schema = new mongoose.Schema(
     {
-        type: String,
-        required: true,
-        min: 3
+        name: {
+            type: String,
+            required: [true, "Name is required"],
+        },
+        email: {
+            type: String,
+            required: [true, "Email is required"],
+            unique: [true, "Email already exists"],
+        },
+        password: {
+            type: String,
+            // not required for Google OAuth
+        },
     },
-    email: {
-        type: String,
-        required: true,
-        unique: true
-    },
-    password: {
-        type: String,
-        required: true
-    },
-});
+    { timestamps: true }
+);
 
-//Model :
-const User = mongoose.models.User || mongoose.model("User", UserSchema);
+const UserModel: Model<DBUserModelType> = mongoose.models.User || mongoose.model<DBUserModelType>("User", UserSchema);
 
-export default User;
+export default UserModel;

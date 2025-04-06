@@ -1,6 +1,12 @@
 import mongoose, { Schema, Document, Model } from "mongoose";
-import { DBLinkModelType } from "@/lib/types/link_type"; // ad
 
+
+
+export interface DBLinkModelType {
+    userEmail: string;
+    originalLink: string;
+    alias: string;
+}
 // Extend ILink with Document for full Mongoose typing
 type LinkDocument = DBLinkModelType & Document;
 
