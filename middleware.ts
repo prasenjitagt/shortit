@@ -11,6 +11,7 @@ export const config = {
         "/dashboard/:path*",
         "/profile/:path*",
         "/settings/:path*",
+        "/"
         // add all the protected routes here
     ],
 };

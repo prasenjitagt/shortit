@@ -19,7 +19,10 @@ export async function POST(req: NextRequest) {
         }
 
         // Create a new link
-        const newLink = new LinkModel({ alias, originalLink: originalUrl, userEmail: email });
+        const newLink = new LinkModel({
+            alias, originalLink: originalUrl, userEmail: email,
+            clicks: 0, // default clicks to 0
+        });
         await newLink.save();
 
         return NextResponse.json({ message: "Alias registered successfully ✅" });

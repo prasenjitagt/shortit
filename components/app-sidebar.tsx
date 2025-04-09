@@ -1,4 +1,5 @@
-import { Calendar, Home, Inbox, Search, Settings } from "lucide-react"
+import { Home, Settings, LogOut } from "lucide-react";
+import Link from "next/link";
 
 import {
     Sidebar,
@@ -9,56 +10,67 @@ import {
     SidebarMenu,
     SidebarMenuButton,
     SidebarMenuItem,
-} from "@/components/ui/sidebar"
-import { ModeToggle } from "./dark-mode"
+} from "@/components/ui/sidebar";
+import { ModeToggle } from "./dark-mode";
+import { HandleLogOut } from "@/actions/actions";
 
-// Menu items.
+// Menu items
 const items = [
     {
         title: "Home",
-        url: "#",
+        url: "/",
         icon: Home,
     },
-    {
-        title: "Inbox",
-        url: "#",
-        icon: Inbox,
-    },
-    {
-        title: "Calendar",
-        url: "#",
-        icon: Calendar,
-    },
-    {
-        title: "Search",
-        url: "#",
-        icon: Search,
-    },
+
     {
         title: "Settings",
-        url: "#",
+        url: "/settings",
         icon: Settings,
     },
-]
+    {
+        title: "My URLs",
+        url: "/my_urls",
+        icon: Settings,
+    }
+];
 
 export function AppSidebar() {
     return (
-        <Sidebar>
-            <SidebarContent>
+        <Sidebar collapsible="icon">
+            <SidebarContent >
+
+
                 <SidebarGroup>
-                    <SidebarGroupLabel>
+                    <SidebarGroupLabel className="flex items-center justify-between gap-2">
+                        {/* Dark Mode Toggle */}
                         <ModeToggle />
+                        {/* Logout Button at Top */}
+                        <button
+                            onClick={HandleLogOut}
+                            className="flex items-center gap-1 text-sm text-muted-foreground hover:text-primary"
+                        >
+                            <LogOut size={18} />
+                            <span>Logout</span>
+                        </button>
                     </SidebarGroupLabel>
-                    <SidebarGroupContent>
-                        <SidebarMenu>
+                </SidebarGroup>
+
+
+
+                <SidebarGroup>
+
+
+                    <SidebarGroupContent >
+                        <SidebarMenu >
                             {items.map((item) => (
                                 <SidebarMenuItem key={item.title}>
                                     <SidebarMenuButton asChild>
-                                        <a href={item.url}>
+                                        <Link href={item.url} className="flex items-center gap-2">
                                             <item.icon />
                                             <span>{item.title}</span>
-                                        </a>
+                                        </Link>
                                     </SidebarMenuButton>
+
                                 </SidebarMenuItem>
                             ))}
                         </SidebarMenu>
@@ -66,5 +78,5 @@ export function AppSidebar() {
                 </SidebarGroup>
             </SidebarContent>
         </Sidebar>
-    )
+    );
 }
