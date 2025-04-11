@@ -17,13 +17,15 @@ export const authOptions: NextAuthOptions = {
         async session({ session }) {
             if (!session.user?.email) return session;
 
+            await connectDB(); // <<< ADD THIS LINE !!!
+
             const sessionUser = await UserModel.findOne({ email: session.user.email });
 
             if (!sessionUser) {
                 throw new Error("No user found");
             }
 
-            session.user.id = sessionUser._id.toString(); // <- Convert ObjectId to string
+            session.user.id = sessionUser._id.toString();
 
             return session;
         },

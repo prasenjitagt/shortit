@@ -1,4 +1,5 @@
 
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 import {
     Table,
@@ -10,6 +11,15 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
+import { toast } from "sonner";
+
+
+function showToast() {
+    toast("Link Copied ✅", {
+        duration: 2000, // 2 seconds
+    });
+}
+
 
 
 interface LinkTableProps {
@@ -31,31 +41,80 @@ const LinkTable = ({ urls }: LinkTableProps) => {
         );
 
     }
+
+
     return (
         <div>
-            <Table>
+            <Table className="w-full table-fixed">
                 <TableCaption>My URLs</TableCaption>
                 <TableHeader>
                     <TableRow>
-                        <TableHead>Original Link</TableHead>
-                        <TableHead>Short Link</TableHead>
-                        <TableHead>Clicks</TableHead>
+                        <TableHead className="text-center">Original Link</TableHead>
+                        <TableHead className="text-center">Short Link</TableHead>
+                        <TableHead className="text-center">Clicks</TableHead>
                     </TableRow>
                 </TableHeader>
 
-
-
                 <TableBody>
-                    {urls.map((url) => (
-                        <TableRow key={url._id}>
-                            <TableCell className="w-[300px]">{url.originalLink}</TableCell>
-                            <TableCell className="w-[300px]">{`${process.env.NEXT_PUBLIC_SITE_URL}/${url.alias}`}</TableCell>
-                            <TableCell>{url.clicks}</TableCell>
-                        </TableRow>
-                    ))}
-                </TableBody>
+                    {urls.map((url) => {
+                        const shortLink = `${process.env.NEXT_PUBLIC_SITE_URL}/${url.alias}`;
+                        const originalLink = url.originalLink;
 
+                        return (
+                            <TableRow key={url._id}>
+                                <TableCell className="text-center">
+                                    <TooltipProvider>
+                                        <Tooltip>
+                                            <TooltipTrigger asChild>
+                                                <span
+                                                    className="cursor-pointer"
+                                                    onClick={() => {
+                                                        navigator.clipboard.writeText(originalLink);
+                                                        showToast();
+                                                    }}
+                                                >
+                                                    {originalLink.length > 25
+                                                        ? `${originalLink.slice(0, 25)}...`
+                                                        : originalLink}
+                                                </span>
+                                            </TooltipTrigger>
+                                            <TooltipContent>
+                                                <p>{originalLink}</p>
+                                            </TooltipContent>
+                                        </Tooltip>
+                                    </TooltipProvider>
+                                </TableCell>
+
+                                <TableCell className="text-center">
+                                    <TooltipProvider>
+                                        <Tooltip>
+                                            <TooltipTrigger asChild>
+                                                <span
+                                                    className="cursor-pointer"
+                                                    onClick={() => {
+                                                        navigator.clipboard.writeText(shortLink);
+                                                        showToast();
+                                                    }}
+                                                >
+                                                    {shortLink.length > 25
+                                                        ? `${shortLink.slice(0, 25)}...`
+                                                        : shortLink}
+                                                </span>
+                                            </TooltipTrigger>
+                                            <TooltipContent>
+                                                <p>{shortLink}</p>
+                                            </TooltipContent>
+                                        </Tooltip>
+                                    </TooltipProvider>
+                                </TableCell>
+
+                                <TableCell className="text-center">{url.clicks}</TableCell>
+                            </TableRow>
+                        );
+                    })}
+                </TableBody>
             </Table>
+
         </div>
     );
 };

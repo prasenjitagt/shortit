@@ -4,8 +4,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 const Home = () => {
   return (
-    <div className="min-h-screen min-w-screen flex items-center justify-center p-4">
-      <Card className="w-full max-w-md shadow-xl rounded-2xl">
+    <div className="h-screen w-full flex items-center justify-center p-4 ">
+
+      <Card className=" max-w-md shadow-xl rounded-2xl">
         <CardHeader>
           <CardTitle className="text-center text-2xl font-bold">
             Paste Your Link Here

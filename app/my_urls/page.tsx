@@ -24,7 +24,11 @@ const MyURLs = () => {
     useEffect(() => {
         const fetchURLs = async () => {
             try {
-                const res = await axios.get('/api/get-urls');
+
+                const api_endpoint = '/api/get-urls'
+
+                const res = await axios.get(api_endpoint);
+
                 setUrls(res.data.urls);
             } catch (error) {
                 console.error('Error fetching URLs:', error);
@@ -48,16 +52,14 @@ const MyURLs = () => {
     }
 
     return (
-        <div className={`${my_screensizes}  border-red-500 border-[2px] `}>
-            <Card>
+        <div className={`  border-red-500 border-[2px] `}>
+            <Card className="mr-[28px] mt-14">
                 <CardHeader>
                     <CardTitle>My URLs</CardTitle>
                 </CardHeader>
                 <CardContent>
                     <LinkTable urls={urls} />
                 </CardContent>
-
-
             </Card>
         </div>
     );
