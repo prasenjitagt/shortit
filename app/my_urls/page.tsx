@@ -7,6 +7,7 @@ import axios from "axios";
 import { my_screensizes } from "@/constants/screensize";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import LinkTable from "@/components/link-table";
+import { Skeleton } from "@/components/ui/skeleton";
 
 type ShortURL = {
     _id: string;
@@ -45,14 +46,14 @@ const MyURLs = () => {
 
     if (loading) {
         return (
-            <div className="flex items-center justify-center h-64 w-">
-                <span className="text-muted-foreground text-lg">Loading...</span>
+            <div className="w-full">
+                <Skeleton className="mr-[28px] mt-14 h-full" />
             </div>
         );
     }
 
     return (
-        <div className={`  border-red-500 border-[2px] `}>
+        <div >
             <Card className="mr-[28px] mt-14">
                 <CardHeader>
                     <CardTitle>My URLs</CardTitle>

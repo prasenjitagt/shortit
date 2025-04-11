@@ -1,6 +1,6 @@
 
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-
+import { Button } from "@/components/ui/button"
 import {
     Table,
     TableBody,
@@ -12,6 +12,7 @@ import {
     TableRow,
 } from "@/components/ui/table";
 import { toast } from "sonner";
+import { downloadQRCode } from "@/lib/download_qr";
 
 
 function showToast() {
@@ -44,14 +45,15 @@ const LinkTable = ({ urls }: LinkTableProps) => {
 
 
     return (
-        <div>
-            <Table className="w-full table-fixed">
+        <div className="w-full overflow-x-auto">
+            <Table className="min-w-[600px] w-full table-fixed">
                 <TableCaption>My URLs</TableCaption>
                 <TableHeader>
                     <TableRow>
                         <TableHead className="text-center">Original Link</TableHead>
                         <TableHead className="text-center">Short Link</TableHead>
                         <TableHead className="text-center">Clicks</TableHead>
+                        <TableHead className="text-center">QR Code</TableHead>
                     </TableRow>
                 </TableHeader>
 
@@ -109,6 +111,16 @@ const LinkTable = ({ urls }: LinkTableProps) => {
                                 </TableCell>
 
                                 <TableCell className="text-center">{url.clicks}</TableCell>
+
+                                <TableCell className="text-center">
+                                    <Button
+                                        onClick={() => downloadQRCode(shortLink)}
+                                        disabled={!shortLink}
+                                        className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md disabled:bg-gray-400 cursor-pointer"
+                                    >Download QR</Button>
+                                </TableCell>
+
+
                             </TableRow>
                         );
                     })}

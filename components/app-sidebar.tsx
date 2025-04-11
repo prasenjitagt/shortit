@@ -1,4 +1,4 @@
-import { Home, Settings, LogOut } from "lucide-react";
+import { Home, Settings, LogOut, LayoutDashboard } from "lucide-react";
 import Link from "next/link";
 
 import {
@@ -17,6 +17,11 @@ import { HandleLogOut } from "@/actions/actions";
 // Menu items
 const items = [
     {
+        title: "Dashboard",
+        url: "/dashboard",
+        icon: LayoutDashboard
+    },
+    {
         title: "Home",
         url: "/",
         icon: Home,
@@ -31,7 +36,8 @@ const items = [
         title: "My URLs",
         url: "/my_urls",
         icon: Settings,
-    }
+    },
+
 ];
 
 export function AppSidebar() {

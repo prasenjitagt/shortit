@@ -3,6 +3,7 @@ import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/app/api/auth/[...nextauth]/options"; // adjust path if needed
 import LinkModel from "@/lib/models/link_model"; // adjust path if needed
 import { connectDB } from "@/lib/db/db_conn"; // your DB connection helper
+import { delay } from "@/lib/delay";
 
 export async function GET(req: NextRequest) {
     await connectDB(); // Make sure DB is connected
@@ -15,6 +16,7 @@ export async function GET(req: NextRequest) {
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
+    // await delay(3000);
 
 
     // Getting Links
