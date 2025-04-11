@@ -11,7 +11,7 @@ export async function GET(req: NextRequest) {
     // Get query params
     const { searchParams } = new URL(req.url);
     const currentPage = parseInt(searchParams.get("currentPage") || "0");
-    const linksPerPage = 9; // fixed 9 links per page
+    const linksPerPage = 8; // fixed 8 links per page
 
     if (!session || !session.user?.email) {
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 });

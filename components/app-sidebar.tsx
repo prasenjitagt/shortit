@@ -1,4 +1,4 @@
-import { Home, Settings, LogOut, LayoutDashboard } from "lucide-react";
+import { Home, Settings, LogOut, LayoutDashboard, Link as IconLink } from "lucide-react";
 import Link from "next/link";
 
 import {
@@ -27,17 +27,17 @@ const items = [
         icon: Home,
     },
 
+
+    {
+        title: "My URLs",
+        url: "/my_urls",
+        icon: IconLink,
+    },
     {
         title: "Settings",
         url: "/settings",
         icon: Settings,
     },
-    {
-        title: "My URLs",
-        url: "/my_urls",
-        icon: Settings,
-    },
-
 ];
 
 export function AppSidebar() {
