@@ -1,6 +1,10 @@
 
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { Button } from "@/components/ui/button"
+import {
+    Tooltip,
+    TooltipContent,
+    TooltipProvider,
+    TooltipTrigger
+} from "@/components/ui/tooltip";
 import {
     Table,
     TableBody,
@@ -11,16 +15,9 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
+import { Button } from "@/components/ui/button"
 import { toast } from "sonner";
 import { downloadQRCode } from "@/lib/download_qr";
-
-
-function showToast() {
-    toast("Link Copied ✅", {
-        duration: 2000, // 2 seconds
-    });
-}
-
 
 
 interface LinkTableProps {
@@ -31,6 +28,17 @@ interface LinkTableProps {
         clicks: number;
     }[];
 }
+
+function showToast() {
+    toast("Link Copied ✅", {
+        duration: 2000, // 2 seconds
+    });
+}
+
+const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+
+
+
 
 const LinkTable = ({ urls }: LinkTableProps) => {
 
@@ -47,23 +55,26 @@ const LinkTable = ({ urls }: LinkTableProps) => {
     return (
         <div className="w-full overflow-x-auto">
             <Table className="min-w-[600px] w-full table-fixed">
-                <TableCaption>My URLs</TableCaption>
                 <TableHeader>
                     <TableRow>
+                        <TableHead className="text-center ">Sl. No.</TableHead>
                         <TableHead className="text-center">Original Link</TableHead>
                         <TableHead className="text-center">Short Link</TableHead>
-                        <TableHead className="text-center">Clicks</TableHead>
+                        <TableHead className="text-center ">Clicks</TableHead>
                         <TableHead className="text-center">QR Code</TableHead>
                     </TableRow>
                 </TableHeader>
 
                 <TableBody>
-                    {urls.map((url) => {
-                        const shortLink = `${process.env.NEXT_PUBLIC_SITE_URL}/${url.alias}`;
+                    {urls.map((url, index) => {
+                        const shortLink = `${baseUrl}/${url.alias}`;
                         const originalLink = url.originalLink;
 
                         return (
                             <TableRow key={url._id}>
+
+                                <TableCell className="text-center">{index + 1}</TableCell>
+
                                 <TableCell className="text-center">
                                     <TooltipProvider>
                                         <Tooltip>
