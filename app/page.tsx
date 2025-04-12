@@ -1,24 +1,9 @@
-import React from "react";
-import OriginalUrlForm from "@/components/original-url-form";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import React from 'react'
 
-const Home = () => {
+const LandingPage = () => {
   return (
-    <div className="h-screen w-full flex items-center justify-center p-4 ">
+    <div>LandingPage</div>
+  )
+}
 
-      <Card className=" max-w-md shadow-xl rounded-2xl">
-        <CardHeader>
-          <CardTitle className="text-center text-2xl font-bold">
-            Paste Your Link Here
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          {/* This is the form component */}
-          <OriginalUrlForm />
-        </CardContent>
-      </Card>
-    </div>
-  );
-};
-
-export default Home;
+export default LandingPage
