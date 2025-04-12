@@ -2,6 +2,8 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import LinkNotFound from "@/components/link-not-found";
+import { ImSpinner9 } from "react-icons/im";
 
 interface ResponseDataType {
     originalLink: string;
@@ -47,12 +49,12 @@ const LinkPage: React.FC<UserPageProps> = ({ params }) => {
     return (
         <div>
             {error ? (
-                <div>
-                    <h2>{error}</h2>
-                    <a href="/">Go back to homepage</a>
-                </div>
+                <LinkNotFound />
             ) : (
-                <div>Redirecting...</div>
+                <div className="h-screen w-screen flex justify-center items-center">
+
+                    <ImSpinner9 className="animate-spin scale-[3]" />
+                </div>
             )}
         </div>
     );

@@ -1,9 +1,8 @@
-import React from 'react'
 
-const LandingPage = () => {
+const GenericShortner = () => {
   return (
-    <div>LandingPage</div>
+    <div>Generic Shortner</div>
   )
 }
 
-export default LandingPage
+export default GenericShortner;
