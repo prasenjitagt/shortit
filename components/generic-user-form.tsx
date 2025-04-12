@@ -19,23 +19,21 @@ import { useState } from "react";
 import axios from "axios";
 import { Loader2 } from "lucide-react";
 import { Card, CardContent } from "./ui/card";
-import { useSession } from "next-auth/react";  // Import next-auth session hook
 
-const OriginalUrlForm = () => {
+const genericUserEmail: string = "genericuser@example.com";
+
+const GenericUserUrlForm = () => {
     const [submitting, setSubmitting] = useState(false);
-
-    // Fetch current user email from next-auth session
-    const { data: session } = useSession();
-    const currentUserEmail = session?.user?.email || "";  // Fallback to empty string if no email is available
 
     const form = useForm<originalUrlFormType & { alias: string }>({
         resolver: zodResolver(originalUrlFormSchema),
         defaultValues: {
-            email: currentUserEmail,  // Use the dynamic email here
+            email: genericUserEmail,
             originalUrl: "",
             alias: "",
         },
     });
+
 
     async function onSubmit(values: originalUrlFormType & { alias: string }) {
         setSubmitting(true);
@@ -59,6 +57,8 @@ const OriginalUrlForm = () => {
                 email: values.email,
             });
 
+
+
             function showToast() {
                 const toastId = toast("Your link is live ✅", {
                     description: "Click the button below to collapse me.",
@@ -74,6 +74,8 @@ const OriginalUrlForm = () => {
 
             showToast(); // 👈 Call the function to show the toast
 
+
+
             form.reset(); // 👈 Optional: reset form after success
 
         } catch (err: any) {
@@ -88,10 +90,13 @@ const OriginalUrlForm = () => {
             toast.error("Something went wrong ❌", {
                 description: "Please try again later.",
             });
+
         } finally {
             setSubmitting(false);
         }
     }
+
+
 
     return (
         <Form {...form}>
@@ -154,4 +159,4 @@ const OriginalUrlForm = () => {
     );
 };
 
-export default OriginalUrlForm;
+export default GenericUserUrlForm;
