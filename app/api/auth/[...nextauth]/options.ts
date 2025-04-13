@@ -45,7 +45,7 @@ export const authOptions: NextAuthOptions = {
 
             // Connect to the database
             try {
-                const db = await connectDB(); // This ensures the DB is connected
+                await connectDB(); // This ensures the DB is connected
 
                 const userExist = await UserModel.findOne({ email: profile.email });
 

@@ -1,5 +1,6 @@
 "use client";
 
+import type { AxiosError } from "axios";
 import { toast } from "sonner";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -73,7 +74,7 @@ const GenericUserUrlForm = () => {
                 action: {
                     label: "SignIn",
                     onClick: () => {
-                        // toast.dismiss(toastId);
+                        toast.dismiss(toastId);
                         router.replace("/login")
                     },
                 },
@@ -84,10 +85,12 @@ const GenericUserUrlForm = () => {
 
             form.reset(); // Optional: reset form after success
 
-        } catch (err: any) {
-            console.error(err);
-            if (err.response?.data?.error) {
-                form.setError("alias", { type: "manual", message: err.response.data.error });
+        } catch (err: unknown) {
+            const error = err as AxiosError<{ error: string }>; // 👈 cast it properly
+            console.error(error);
+
+            if (error.response?.data?.error) {
+                form.setError("alias", { type: "manual", message: error.response.data.error });
             } else {
                 form.setError("alias", { type: "manual", message: "Failed to register alias. Try again!" });
             }
@@ -95,7 +98,8 @@ const GenericUserUrlForm = () => {
             toast.error("Something went wrong ❌", {
                 description: "Please try again later.",
             });
-        } finally {
+        }
+        finally {
             setSubmitting(false);
         }
     }

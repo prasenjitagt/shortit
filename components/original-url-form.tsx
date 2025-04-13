@@ -1,7 +1,7 @@
 "use client";
 
 import { toast } from "sonner"; // 👈 ADD this import at the top
-
+import { AxiosError } from "axios";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { originalUrlFormSchema, originalUrlFormType } from "@/lib/zod/zod-schema";
@@ -75,19 +75,22 @@ const OriginalUrlForm = () => {
 
             form.reset(); // 👈 Optional: reset form after success
 
-        } catch (err: any) {
-            console.error(err);
-            if (err.response?.data?.error) {
-                form.setError("alias", { type: "manual", message: err.response.data.error });
+        } catch (err) {
+            const error = err as AxiosError<{ error: string }>;
+
+            console.error(error);
+
+            if (error.response?.data?.error) {
+                form.setError("alias", { type: "manual", message: error.response.data.error });
             } else {
                 form.setError("alias", { type: "manual", message: "Failed to register alias. Try again!" });
             }
 
-            // ❌ Show error toast too
             toast.error("Something went wrong ❌", {
                 description: "Please try again later.",
             });
-        } finally {
+        }
+        finally {
             setSubmitting(false);
         }
     }
