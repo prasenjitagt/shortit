@@ -1,4 +1,5 @@
 
+
 import {
     Tooltip,
     TooltipContent,
@@ -18,6 +19,7 @@ import {
 import { Button } from "@/components/ui/button"
 import { toast } from "sonner";
 import { downloadQRCode } from "@/lib/download_qr";
+import { useLinkStore } from "@/stores/my_urls_store";
 
 
 interface LinkTableProps {
@@ -29,8 +31,8 @@ interface LinkTableProps {
     }[];
 }
 
-function showToast() {
-    toast("Link Copied ✅", {
+function showToast(message: string) {
+    toast(message, {
         duration: 2000, // 2 seconds
     });
 }
@@ -42,14 +44,20 @@ const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
 
 const LinkTable = ({ urls }: LinkTableProps) => {
 
-    if (!urls || urls.length === 0) {
-        return (
-            <div className="flex items-center justify-center h-64 w-">
-                <span className="text-muted-foreground text-lg">No URLs found</span>
-            </div>
-        );
+    const deleteUrl = useLinkStore(state => state.deleteUrl);
 
-    }
+
+    const handleDelete = async (id: string) => {
+        try {
+            await deleteUrl(id);
+            showToast("Link Deleted ✅");
+        } catch (error) {
+            console.error(error);
+            showToast("Failed to delete ❌");
+        }
+    };
+
+
 
 
     return (
@@ -62,6 +70,7 @@ const LinkTable = ({ urls }: LinkTableProps) => {
                         <TableHead className="text-center">Short Link</TableHead>
                         <TableHead className="text-center ">Clicks</TableHead>
                         <TableHead className="text-center">QR Code</TableHead>
+                        <TableHead className="text-center">Actions</TableHead>
                     </TableRow>
                 </TableHeader>
 
@@ -83,7 +92,7 @@ const LinkTable = ({ urls }: LinkTableProps) => {
                                                     className="cursor-pointer"
                                                     onClick={() => {
                                                         navigator.clipboard.writeText(originalLink);
-                                                        showToast();
+                                                        showToast("Link Copied ✅");
                                                     }}
                                                 >
                                                     {originalLink.length > 25
@@ -106,7 +115,7 @@ const LinkTable = ({ urls }: LinkTableProps) => {
                                                     className="cursor-pointer"
                                                     onClick={() => {
                                                         navigator.clipboard.writeText(shortLink);
-                                                        showToast();
+                                                        showToast("Link Copied ✅");
                                                     }}
                                                 >
                                                     {shortLink.length > 25
@@ -131,6 +140,15 @@ const LinkTable = ({ urls }: LinkTableProps) => {
                                     >Download QR</Button>
                                 </TableCell>
 
+                                <TableCell className="text-center">
+                                    <Button
+                                        variant="destructive"
+                                        onClick={() => handleDelete(url._id)}
+                                        className="cursor-pointer"
+                                    >
+                                        Delete
+                                    </Button>
+                                </TableCell>
 
                             </TableRow>
                         );

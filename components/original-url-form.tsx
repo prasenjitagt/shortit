@@ -141,7 +141,7 @@ const OriginalUrlForm = () => {
                 />
 
                 <div className="flex justify-center">
-                    <Button type="submit" disabled={submitting} className="w-[150px]">
+                    <Button type="submit" disabled={submitting} className="w-[150px] cursor-pointer">
                         {submitting ? (
                             <Loader2 className="h-4 w-4 animate-spin" />
                         ) : (

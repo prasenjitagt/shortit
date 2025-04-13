@@ -1,3 +1,5 @@
+//api/get-urls/route.ts
+
 import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/app/api/auth/[...nextauth]/options"; // adjust path if needed
@@ -11,7 +13,7 @@ export async function GET(req: NextRequest) {
     // Get query params
     const { searchParams } = new URL(req.url);
     const currentPage = parseInt(searchParams.get("currentPage") || "0");
-    const linksPerPage = 8; // fixed 8 links per page
+    const linksPerPage = parseInt(searchParams.get("linksPerPage") || "8");
 
     if (!session || !session.user?.email) {
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -34,4 +36,40 @@ export async function GET(req: NextRequest) {
         return NextResponse.json({ error: "Failed to fetch links" }, { status: 500 });
     }
 
+}
+
+
+// DELETE method implementation
+export async function DELETE(req: NextRequest) {
+    await connectDB(); // Connect to DB
+    const session = await getServerSession(authOptions);
+
+    // Get the URL ID from the request
+    const { searchParams } = new URL(req.url);
+    const id = searchParams.get("id");
+
+    if (!session || !session.user?.email) {
+        return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    if (!id) {
+        return NextResponse.json({ error: "ID is required" }, { status: 400 });
+    }
+
+    try {
+        // Find the link and check if it belongs to the current user
+        const link = await LinkModel.findOne({ _id: id, userEmail: session.user.email });
+
+        if (!link) {
+            return NextResponse.json({ error: "Link not found or does not belong to you" }, { status: 404 });
+        }
+
+        // Delete the link
+        await LinkModel.deleteOne({ _id: id });
+
+        return NextResponse.json({ message: "Link deleted successfully" }, { status: 200 });
+    } catch (error) {
+        console.error("Failed to delete link:", error);
+        return NextResponse.json({ error: "Failed to delete link" }, { status: 500 });
+    }
 }
