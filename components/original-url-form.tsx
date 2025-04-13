@@ -50,8 +50,7 @@ const OriginalUrlForm = () => {
                 return;
             }
 
-            // 2. Alias is available, proceed to register
-            console.log("Registering:", values);
+
 
             await axios.post("/api/reg-link", {
                 alias: values.alias,

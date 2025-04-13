@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { connectDB } from "@/lib/db/db_conn"; // updated to your correct connection function
 import LinkModel from "@/lib/models/link_model"; // updated to your correct model name
 
+
+
 export async function POST(req: NextRequest) {
     try {
         const { alias, originalUrl, email } = await req.json();
@@ -23,9 +25,15 @@ export async function POST(req: NextRequest) {
             alias, originalLink: originalUrl, userEmail: email,
             clicks: 0, // default clicks to 0
         });
-        await newLink.save();
+        const savedLink = await newLink.save();
+        const shortLink = `${process.env.NEXT_PUBLIC_SITE_URL}/${savedLink.alias}`;
 
-        return NextResponse.json({ message: "Alias registered successfully ✅" });
+        const responseObj = {
+            message: "Alias registered successfully ✅",
+            shortLink
+        }
+
+        return NextResponse.json(responseObj, { status: 201 });
     } catch (error) {
         console.error("Error registering alias:", error);
         return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
