@@ -12,7 +12,6 @@ import {
     SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { ModeToggle } from "./dark-mode";
-import { HandleLogOut } from "@/actions/actions";
 
 // Menu items
 const items = [
@@ -51,13 +50,7 @@ export function AppSidebar() {
                         {/* Dark Mode Toggle */}
                         <ModeToggle />
                         {/* Logout Button at Top */}
-                        <button
-                            onClick={HandleLogOut}
-                            className="flex items-center gap-1 text-sm text-muted-foreground hover:text-primary"
-                        >
-                            <LogOut size={18} />
-                            <span>Logout</span>
-                        </button>
+
                     </SidebarGroupLabel>
                 </SidebarGroup>
 
@@ -81,6 +74,12 @@ export function AppSidebar() {
                             ))}
                         </SidebarMenu>
                     </SidebarGroupContent>
+                </SidebarGroup>
+
+
+                <SidebarGroup>
+                    <ModeToggle />
+
                 </SidebarGroup>
             </SidebarContent>
         </Sidebar>
