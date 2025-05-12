@@ -1,24 +1,50 @@
 import mongoose from "mongoose";
 
-// Cache the connection to avoid multiple connections in serverless environments
-let cached = (global as any).mongoose || { conn: null, promise: null };
+const MONGO_URI = process.env.MONGODB_URI as string;
 
-export const connectDB = async () => {
-    // If a connection exists, return it
+if (!MONGO_URI) {
+    throw new Error("Please define the MONGODB_URI environment variable");
+}
+
+// Define the type for the cached connection
+interface MongooseCache {
+    conn: typeof mongoose | null;
+    promise: Promise<typeof mongoose> | null;
+}
+
+// Use global cache in dev to avoid multiple connections
+declare global {
+    // eslint-disable-next-line no-var
+    var mongoose: MongooseCache;
+}
+
+let cached = global.mongoose;
+
+if (!cached) {
+    cached = global.mongoose = { conn: null, promise: null };
+}
+
+const connectDB = async (locationInformation: string = "unspecified") => {
     if (cached.conn) {
+        console.log(`MongoDB already connected (cached) in no need to call in: ${locationInformation}`);
         return cached.conn;
     }
 
-    // If there is no existing connection, create one
     if (!cached.promise) {
-        const MONGO_URI: string = process.env.MONGO_URI as string;
-        if (!MONGO_URI) {
-            throw new Error("MONGO_URI is missing");
-        }
-
-        cached.promise = mongoose.connect(MONGO_URI).then((mongoose) => mongoose);
+        cached.promise = mongoose.connect(MONGO_URI, {
+            bufferCommands: false,
+        });
     }
 
-    cached.conn = await cached.promise;
-    return cached.conn;
+    try {
+        cached.conn = await cached.promise;
+        console.log(`MongoDB Connected in ${locationInformation}`);
+        return cached.conn;
+    } catch (error) {
+        cached.promise = null;
+        console.error("MongoDB Connection Error", error);
+        throw error;
+    }
 };
+
+export default connectDB;

@@ -154,7 +154,7 @@ const GenericUserUrlForm = () => {
                     />
 
                     {/* Submit Button */}
-                    <div className="flex justify-center">
+                    <section className="flex justify-center">
                         <Button type="submit" disabled={submitting} className="w-[150px]">
                             {submitting ? (
                                 <Loader2 className="h-4 w-4 animate-spin" />
@@ -162,7 +162,7 @@ const GenericUserUrlForm = () => {
                                 "Register"
                             )}
                         </Button>
-                    </div>
+                    </section>
                 </form>
             </Form>
 

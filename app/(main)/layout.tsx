@@ -12,8 +12,12 @@ export default async function MainLayout({ children }: { children: React.ReactNo
         <MySessionProvider session={session}>
             <SidebarProvider>
                 <AppSidebar />
-                <SidebarTrigger />
-                {children}
+                <section className="w-full px-6 pb-4">
+                    <div className="my-2 ">
+                        <SidebarTrigger />
+                    </div>
+                    {children}
+                </section>
             </SidebarProvider>
         </MySessionProvider>
     );

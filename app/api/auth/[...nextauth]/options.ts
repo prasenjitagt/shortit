@@ -1,8 +1,8 @@
 // app/api/auth/[...nextauth]/options.ts
 import { NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
-import { connectDB } from "@/lib/db/db_conn";
 import UserModel from "@/lib/models/user_model";
+import connectDB from "@/lib/db/db_conn";
 
 export const authOptions: NextAuthOptions = {
     providers: [
@@ -21,7 +21,7 @@ export const authOptions: NextAuthOptions = {
             if (!session.user?.email) return session;
 
             try {
-                await connectDB(); // Ensure DB connection
+                await connectDB("app/api/auth/[...nextauth]/options.ts"); // Ensure DB connection
 
                 const sessionUser = await UserModel.findOne({ email: session.user.email });
 

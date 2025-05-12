@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 const Home = () => {
     return (
-        <div className="h-screen w-full flex items-center justify-center p-4 ">
+        <div className="h-full w-full flex items-center justify-center p-4 ">
 
             <Card className=" max-w-md shadow-xl rounded-2xl">
                 <CardHeader>
